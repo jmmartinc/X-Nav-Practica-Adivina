@@ -49,3 +49,14 @@ body {
     top: 630px;
     left: 40px;
 }
+
+#next {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    height: 50px;
+    width: 150px;
+    position: absolute;
+    top: 630px;
+    left: 40px;
+}
