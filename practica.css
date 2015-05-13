@@ -8,6 +8,9 @@ body {
 }
 
 #image {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     display: inline-block;
     vertical-align: middle;
     max-height: 400px;
@@ -28,12 +31,18 @@ body {
 }
 
 #map {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     margin-right: 20px;
     height: 700px;
     width:98%;
 }
 
 #accept {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     height: 50px;
     width: 150px;
     position: absolute;
