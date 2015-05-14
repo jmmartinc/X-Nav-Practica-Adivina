@@ -32,6 +32,8 @@ $(document).ready(function() {
 
     function newGame() {
         $("#next").hide();
+        $("#score").html(0);
+        $("#distance").html(0);
         resetMap();
         resetImages();
         getPhotos(city);
@@ -94,16 +96,25 @@ $(document).ready(function() {
     }
 
     $("#easy").click(function(){
+        $("#easy").hide();
+        $("#medium").show();
+        $("#hard").show();
         time = 10000;
         newGame();
     });
 
     $("#medium").click(function(){
+        $("#easy").show();
+        $("#medium").hide();
+        $("#hard").show();
         time = 5000;
         newGame();
     });
 
     $("#hard").click(function(){
+        $("#easy").show();
+        $("#medium").show();
+        $("#hard").hide();
         time = 1000;
         newGame();
     });
@@ -113,6 +124,7 @@ $(document).ready(function() {
             correctMarker.setOpacity(1);
             drawLine();
             $("#score").html(getScore());
+            $("#distance").html(Math.floor(getDistance()) + " Km");
             resetImages();
             $("#next").show();
         }
