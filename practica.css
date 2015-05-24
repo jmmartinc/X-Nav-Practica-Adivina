@@ -1,6 +1,5 @@
 body {
     background: url(images/background.jpg);
-
 }
 
 #score, #distance {
@@ -14,12 +13,14 @@ body {
     display: inline-block;
     vertical-align: middle;
     max-height: 400px;
-    width: 100%;
+	height: auto;
+	width: 100%;
 }
 
 #imageframe {
     text-align: center;
     margin-left: 20px;
+	margin-bottom: 10px;
     height: 400px;
 }
 
@@ -28,6 +29,15 @@ body {
     display: inline-block;
     vertical-align: middle;  /* vertical alignment of the inline element */
     height: 100%;
+}
+
+#history {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+	background-color: #eee;
+    margin-left: 20px;
+	height: 290px;
 }
 
 #map {

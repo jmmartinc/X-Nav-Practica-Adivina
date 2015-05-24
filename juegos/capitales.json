@@ -1,0 +1,71 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+					-3.7038,
+                    40.4168
+                ]
+            },
+            "properties": {
+                "name": "Madrid"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.1257,
+                    51.5072
+                ]
+            },
+            "properties": {
+                "name": "London"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    116.3833,
+                    39.9166
+                ]
+            },
+            "properties": {
+                "name": "Beijing"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -58.3815,
+                    -34.6037
+                ]
+            },
+            "properties": {
+                "name": "Buenos Aires"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    4.8952,
+                    52.3702
+                ]
+            },
+            "properties": {
+                "name": "Amsterdam"
+            }
+        }
+    ]
+        
+}

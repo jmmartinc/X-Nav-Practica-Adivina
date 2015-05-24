@@ -1,46 +1,61 @@
 $(document).ready(function() {
-    var map = "";
-    var marker = "";
-    var correctMarker = "";
-    var nimages = 20;
-    var timeoutImages = "";
     var time = 10000;
     var imgShown = 0;
     var coordinates = "";
-    var maxDistance = 15409;
-    var items = [];
-    var city = "";
+    var point = "";
     var latitude = 0;
     var longitude = 0;
+	var game = "Capitales";
+	var score = 0;
+	
+    var map = null;
+    var marker = null;
+    var correctMarker = null;
+    var maxPhotos = 20;
+    var timeoutImages = null;
+    var maxDistance = 15409;
+	var jsonData = null;
 
-    
-    getData();
     newGame();
+	
+    function newGame() {
+        $("#next").hide();
+		resetResult();
+		if (jsonData == null)
+			getData(game);
+		getRandomPoint();
+        printNewMap();
+        printPhotos(point);
+		//printHistory();
+    }
 
-    function getData() {
+    function getData(game) {
         $.ajax({ 
-            url: "capitales.json", 
+            url: "juegos/"+normalize(game)+".json", 
             dataType: 'json',  
             async: false, 
             success: function(data){ 
-                city = data.city[0].name;
-                latitude = data.city[0].lat;
-                longitude = data.city[0].lon;
+                jsonData = data;
             } 
         });
     }
 
-    function newGame() {
-        $("#next").hide();
+	function getRandomPoint() {
+		n = Math.floor(Math.random() * jsonData.features.length);
+		point = jsonData.features[n].properties.name;
+		latitude = jsonData.features[n].geometry.coordinates[1];
+		longitude = jsonData.features[n].geometry.coordinates[0];
+	}
+	
+	function resetResult() {
+		score = 0;
+		distance = 0;
         $("#score").html(0);
         $("#distance").html(0);
-        resetMap();
-        resetImages();
-        getPhotos(city);
-    }
+	}
 
-    function resetMap() {
-        if (map != "") {
+    function printNewMap() {
+        if (map != null) {
             map.remove();
         }
         map = L.map('map').setView([45, 11], 2);
@@ -65,20 +80,21 @@ $(document).ready(function() {
         var polyline = L.polyline(line, {color: '#222'}).addTo(map);
     }
 
-    function getPhotos(tag) {
+    function printPhotos(tag) {
+        resetPhotos();
         $.getJSON('http://api.flickr.com/services/feeds/photos_public.gne?tags=' +
         tag + '&tagmode=any&format=json&jsoncallback=?', function(data){
-            var item = data.items.splice(0,nimages);
+            var item = data.items.splice(0,maxPhotos);
             $("#image").attr('src',item[imgShown].media.m);
             timeoutImages = setInterval(function(){     // Cambia
                 imgShown++;
-                $("#image").attr('src',item[imgShown % nimages].media.m);
+                $("#image").attr('src',item[imgShown % maxPhotos].media.m);
             }, time);
         });
     }
 
-    function resetImages() {
-        if (timeoutImages != "") {
+    function resetPhotos() {
+        if (timeoutImages != null) {
             clearTimeout(timeoutImages);
             timeoutImages = "";
             imgShown = 0;
@@ -92,8 +108,29 @@ $(document).ready(function() {
     function getScore() {
         if (imgShown >= 20)
             imgShown = 19;
-        return Math.floor( ( (maxDistance*nimages) - (imgShown+1)*getDistance() ) * 0.0032 );
+		s = 1000 - imgShown*50 - Math.floor(1000*(getDistance()/maxDistance))
+		if (s < 0)
+			return 0;
+        else
+			return s;
     }
+	
+	function addHistoryEntry(){
+		data={date: new Date(),
+			game: game,
+			name: point,
+			score: score
+		}
+		history.pushState(data, "state", location.href);
+		html= '<a id='+data.name+' href="javascript:historyGo()" class="list-group-item his">'+" Juego: "+data.game +'</br> Puntuación: '+data.score+'</br> Hora: '+data.date.getHours()+":"+data.date.getMinutes()+":"+data.date.getSeconds()+'</a>'
+		$("#history").append(html);
+	}
+	
+	$('#games li a').on('click', function(){
+		game = $(this).text();
+		jsonData = null;
+		newGame();
+	});
 
     $("#easy").click(function(){
         $("#easy").hide();
@@ -123,14 +160,36 @@ $(document).ready(function() {
         if (marker.getLatLng().lat != 0 || marker.getLatLng().lng != 0) {
             correctMarker.setOpacity(1);
             drawLine();
-            $("#score").html(getScore());
+			score = getScore();
+            $("#score").html(score);
             $("#distance").html(Math.floor(getDistance()) + " Km");
-            resetImages();
+            resetPhotos();
             $("#next").show();
+			addHistoryEntry();
         }
     });
 
     $("#next").click(function(){
         newGame();
     });
+	
+	function normalize(str) {
+		var from = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
+		to = "abcdefghijklmnnopqrstuvwxyzAAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+		mapping = {};
+
+		for(var i = 0, j = from.length; i < j; i++ )
+			mapping[ from.charAt( i ) ] = to.charAt( i );
+
+		var ret = [];
+		for( var i = 0, j = str.length; i < j; i++ ) {
+			var c = str.charAt( i );
+			if( mapping.hasOwnProperty( str.charAt( i ) ) )
+				ret.push( mapping[ c ] );
+			else
+				ret.push( c );
+		}      
+		return ret.join( '' );
+
+	};
 });
