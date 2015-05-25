@@ -49,7 +49,6 @@ $(document).ready(function() {
             async: false, 
             success: function(data){
                 jsonData = data;
-				console.log(jsonData);
             } 
         });
     }
@@ -128,11 +127,25 @@ $(document).ready(function() {
         else
 			return s;
     }
+
+    window.onpopstate = function(event) {
+        console.log(event.state);
+        restoreState(event.state);
+    }
+
+    function restoreState(data) {
+        getData(data.game);
+        newRound();
+        time = data.time;
+        score = data.score;
+        $("#score").html(score);
+    }
 	
 	function addHistoryEntry(){
 		data={date: new Date(),
 			game: game,
 			name: point,
+            time: time,
 			score: score
 		}
 		history.pushState(data, "state", location.href);
@@ -143,13 +156,14 @@ $(document).ready(function() {
 			goHistory(id);
 		});
 		historyID ++;
+        console.log(history);
 	}
 	
 	function goHistory(id){
-		var go = id - historyID;
+		var go = id - (historyID-1);
 		if(go != 0){
 			//addHistoryEntry();
-			//historyID = go;
+			historyID = go;
 			//replace();
 			history.go(go);
 		}else{
