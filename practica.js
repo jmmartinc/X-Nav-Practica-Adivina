@@ -15,27 +15,41 @@ $(document).ready(function() {
     var timeoutImages = null;
     var maxDistance = 15409;
 	var jsonData = null;
+	var historyID = 0;
+	var firstRound = true;
 
-    newGame();
+    newGame(game);
 	
-    function newGame() {
-        $("#next").hide();
+    function newGame(g) {
+		if (!firstRound)
+			addHistoryEntry();
 		resetResult();
-		if (jsonData == null)
+		firstRound = true;
+		game = g;
+		if (jsonData == null){
 			getData(game);
+		}
+		newRound();
+		//printHistory();
+    }
+	
+	function newRound() {
+		$("#solution").html("");
+        $("#distance").html("");
+        $("#next").hide();
 		getRandomPoint();
         printNewMap();
         printPhotos(point);
-		//printHistory();
-    }
+	}
 
     function getData(game) {
         $.ajax({ 
             url: "juegos/"+normalize(game)+".json", 
             dataType: 'json',  
             async: false, 
-            success: function(data){ 
+            success: function(data){
                 jsonData = data;
+				console.log(jsonData);
             } 
         });
     }
@@ -122,14 +136,30 @@ $(document).ready(function() {
 			score: score
 		}
 		history.pushState(data, "state", location.href);
-		html= '<a id='+data.name+' href="javascript:historyGo()" class="list-group-item his">'+" Juego: "+data.game +'</br> Puntuación: '+data.score+'</br> Hora: '+data.date.getHours()+":"+data.date.getMinutes()+":"+data.date.getSeconds()+'</a>'
-		$("#history").append(html);
+		text= '<a id="'+historyID+'" class="list-group-item his">'+" Juego: "+data.game +'</br> Puntuación: '+data.score+'</br> Hora: '+data.date.getHours()+":"+data.date.getMinutes()+":"+data.date.getSeconds()+'</a>'
+		$("#history").append(text);
+		$("#"+historyID).click(function(){
+			var id = $(this).attr("id"); 
+			goHistory(id);
+		});
+		historyID ++;
+	}
+	
+	function goHistory(id){
+		var go = id - historyID;
+		if(go != 0){
+			//addHistoryEntry();
+			//historyID = go;
+			//replace();
+			history.go(go);
+		}else{
+			alert("Ya estas en ese juego");
+		}
 	}
 	
 	$('#games li a').on('click', function(){
-		game = $(this).text();
 		jsonData = null;
-		newGame();
+		newGame($(this).text());
 	});
 
     $("#easy").click(function(){
@@ -137,7 +167,7 @@ $(document).ready(function() {
         $("#medium").show();
         $("#hard").show();
         time = 10000;
-        newGame();
+        newGame(game);
     });
 
     $("#medium").click(function(){
@@ -145,7 +175,7 @@ $(document).ready(function() {
         $("#medium").hide();
         $("#hard").show();
         time = 5000;
-        newGame();
+        newGame(game);
     });
 
     $("#hard").click(function(){
@@ -153,29 +183,32 @@ $(document).ready(function() {
         $("#medium").show();
         $("#hard").hide();
         time = 1000;
-        newGame();
+        newGame(game);
     });
 
     $("#accept").click(function(){
         if (marker.getLatLng().lat != 0 || marker.getLatLng().lng != 0) {
             correctMarker.setOpacity(1);
             drawLine();
-			score = getScore();
+			score += getScore();
+            $("#solution").html(point);
             $("#score").html(score);
             $("#distance").html(Math.floor(getDistance()) + " Km");
             resetPhotos();
             $("#next").show();
-			addHistoryEntry();
+			if (firstRound)
+				firstRound = false;
+			//addHistoryEntry();
         }
     });
 
     $("#next").click(function(){
-        newGame();
+        newRound();
     });
 	
 	function normalize(str) {
 		var from = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
-		to = "abcdefghijklmnnopqrstuvwxyzAAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
+		to = "abcdefghijklmnnopqrstuvwxyzaaaaaeeeeiiiioooouuuuaaaaaeeeeiiiioooouuuunncc",
 		mapping = {};
 
 		for(var i = 0, j = from.length; i < j; i++ )

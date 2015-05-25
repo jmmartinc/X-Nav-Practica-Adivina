@@ -2,7 +2,7 @@ body {
     background: url(images/background.jpg);
 }
 
-#score, #distance {
+#score, #distance, #solution {
     margin-left: 0px;
 }
 
@@ -44,9 +44,9 @@ body {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    margin-right: 20px;
+    margin-left: 20px;
     height: 700px;
-    width:98%;
+    width:96%;
 }
 
 #accept {

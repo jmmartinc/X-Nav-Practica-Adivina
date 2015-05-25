@@ -1,0 +1,70 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+					2.2945,
+                    48.8582
+                ]
+            },
+            "properties": {
+                "name": "Eiffel Tower"
+            }
+        },
+		{
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+					117.2319,
+                    40.67693
+                ]
+            },
+            "properties": {
+                "name": "Great Wall China"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -74.0444,
+                    40.6891
+                ]
+            },
+            "properties": {
+                "name": "Statue of Liberty"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    78.0419,
+                    27.1750
+                ]
+            },
+            "properties": {
+                "name": "Taj Mahal"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -72.5455,
+                    -13.1633
+                ]
+            },
+            "properties": {
+                "name": "Machu Picchu"
+            }
+        }
+    ]    
+}

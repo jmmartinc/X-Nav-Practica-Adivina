@@ -1,0 +1,70 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+					-56.1219,
+                    -34.8787
+                ]
+            },
+            "properties": {
+                "name": "La Bombonera"
+            }
+        },
+		{
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+					11.6247,
+                    48.2187
+                ]
+            },
+            "properties": {
+                "name": "Allianz Arena"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -3.7206,
+                    40.4017
+                ]
+            },
+            "properties": {
+                "name": "Vicente Calderón"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    116.3901,
+                    39.9915
+                ]
+            },
+            "properties": {
+                "name": "Beijing National Stadium"
+            }
+        },
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -0.2797,
+                    51.5558
+                ]
+            },
+            "properties": {
+                "name": "Wembley Stadium"
+            }
+        }
+    ]    
+}
